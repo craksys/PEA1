@@ -10,34 +10,34 @@ public class Graph {
     Random rand = new Random();
     public int size;
 
-    public void createGraph(int size){
+    public void createGraph(int size) {
         this.size = size;
         matrix = new int[size][size];
     }
 
-    public void generateGraph(){
-        for(int i = 0;i < size; i++) {
-            for(int j = 0; j < size; j++){
+    public void generateGraph() {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
                 if (i != j) {
-                    matrix[i][j] = rand.nextInt(50)+1;
-                }else{
+                    matrix[i][j] = rand.nextInt(50) + 1;
+                } else {
                     matrix[i][j] = -1;
                 }
             }
         }
     }
 
-    public void printAll(){
-        for(int i = 0;i < size; i++){
-            for(int j = 0; j<size; j++) {
-                System.out.print(matrix[i][j]);
-                if(matrix[i][j] < 10 && matrix[i][j] != -1){
+    public void printAll() {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (matrix[i][j] < 10 && matrix[i][j] != -1) {
                     System.out.print("   ");
-                }else if(matrix[i][j] < 100 && matrix[i][j] != -1) {
-                 System.out.print("  ");
-                }else{
+                } else if (matrix[i][j] < 100) {
+                    System.out.print("  ");
+                } else {
                     System.out.print(" ");
                 }
+                System.out.print(matrix[i][j]);
             }
             System.out.println("");
         }
@@ -50,8 +50,8 @@ public class Graph {
             Scanner myReader = new Scanner(myObj);
             size = myReader.nextInt(); //odczytujemy liczbę miast
             matrix = new int[size][size];
-            for(int i =0; i < size; i++){
-                for(int j=0; j < size; j++){
+            for (int i = 0; i < size; i++) {
+                for (int j = 0; j < size; j++) {
                     matrix[i][j] = myReader.nextInt();
                 }
             }
