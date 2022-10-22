@@ -3,89 +3,119 @@ package com.company;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+import static java.lang.Integer.MAX_VALUE;
+
 public class BruteForce {
     Graph graph;
     int[] counter;
     int startNode = 0;
     Deque<Integer> pathStack = new ArrayDeque<>();
-    Deque<Integer> weightStack = new ArrayDeque<>();
+    Deque<Integer> bestPathStack = new ArrayDeque<>();
+    int weightStack = 0;
+    int bestStack = MAX_VALUE;
+
     public BruteForce(Graph graph) {
         this.graph = graph;
     }
 
     public void intCounter() {
-        counter = new int[graph.size];
-        for (int i = 0; i < graph.size; i++) {
-            counter[i] = graph.size - 1;
+        counter = new int[graph.size - 1];
+        for (int i = 0; i < graph.size - 1; i++) {
+            counter[i] = i + 1;
         }
     }
 
     public void bruteForce() {
         intCounter();
         int tempNow, tempNext;
-        while (counter[startNode] >= 0) {
+        do {
+            pushActualPath();
             tempNow = startNode;
-            pathStack.add(tempNow);
-            while(pathStack.size() < graph.size + 1){
-            tempNext = counter[tempNow];
-            weightStack.add(graph.matrix[tempNow][tempNext]);
-            pathStack.add(tempNext);
-            tempNow = tempNext;
+            for (int i = 0; i < counter.length; i++) {
+                tempNext = counter[i];
+                weightStack += graph.matrix[tempNow][tempNext];
+                tempNow = tempNext;
             }
-            nextPermutation();
-            //checkHamilton();
-            //counter[graph.size-1]--;
-            //while(checkCounter());
-            //System.out.println("xd");
-            if(counter[0] == 7){System.out.println("xd");}
+            weightStack += graph.matrix[tempNow][startNode];
+            if (weightStack < bestStack) {
+                bestStack = weightStack;
+                swapPath();
+            }
+            weightStack = 0;
+            pathStack.clear();
+        }
+        while (findNextPermutation(counter));
+        System.out.println(bestStack);
+        while (!bestPathStack.isEmpty()) {
+            System.out.print(bestPathStack.pop());
+            System.out.print(" ");
         }
     }
 
-    public void checkHamilton(){
-        int tempTab[] = new int[graph.size];
-        boolean check = false;
-        while(!pathStack.isEmpty()){
-            tempTab[pathStack.pop()]++;
+    public void swapPath() {
+        bestPathStack.clear();
+        while (!pathStack.isEmpty()) {
+            bestPathStack.add(pathStack.pop());
         }
-        //sprawdzanie
-        if(tempTab[0] != 2){
-            check = true;
-        }
-        if(check == false) {
-            for (int i = 1; i < graph.size; i++) {
-                if (tempTab[i] != 1) {
-                    check = true;
-                }
-            }
-        }
-        if(check == false){
-            //System.out.println("droga hamiltona");
-        }
-        pathStack.clear();
-        weightStack.clear();
-        if(counter[0] == 8){System.out.println("xd");}
     }
 
-    boolean checkCounter(){ //zwraca true jeżeli funkcje trzeba powtórzyć
-        for(int i =0; i< graph.size; i++){
-            if(counter[0] == -1){
-                return false;
-            }else if(counter[i] < 0){
-                counter[i] = graph.size - 1;
-                counter[i-1]--;
-                return true;
-            }
+    public void pushActualPath() {
+        pathStack.add(startNode);
+        for (int i = 0; i < counter.length; i++) {
+            pathStack.add(counter[i]);
         }
-        return false;
+        pathStack.add(startNode);
     }
 
-    void nextPermutation(){
-        counter[graph.size-1]--;
-        while(checkCounter());
-        while(checkPermutation()){
-            counter[graph.size-1]--;
-            while(checkCounter());
+    //--------------------------------------------------------------
+    public static int[] swap(int[] data, int left, int right) {
+        int temp = data[left];
+        data[left] = data[right];
+        data[right] = temp;
+
+        return data;
+    }
+
+    public static int[] makeReverse(int[] data, int left, int right) {
+        while (left < right) {
+            int temp = data[left];
+            data[left++] = data[right];
+            data[right--] = temp;
         }
+
+        return data;
+    }
+
+
+    public static boolean findNextPermutation(int[] data) {
+        if (data.length <= 1)
+            return false;
+
+        int last = data.length - 2;
+
+        while (last >= 0) {
+            if (data[last] < data[last + 1]) {
+                break;
+            }
+            last--;
+        }
+
+        if (last < 0)
+            return false;
+
+        int nextGreater = data.length - 1;
+
+        for (int i = data.length - 1; i > last; i--) {
+            if (data[i] > data[last]) {
+                nextGreater = i;
+                break;
+            }
+        }
+
+        swap(data, nextGreater, last);
+
+        makeReverse(data, last + 1, data.length - 1);
+        return true;
     }
 
 
