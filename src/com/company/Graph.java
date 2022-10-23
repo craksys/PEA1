@@ -44,9 +44,9 @@ public class Graph {
     }
 
 
-    public void copyFromTXT() {
+    public void copyFromTXT(String filename) {
         try {
-            File myObj = new File("src/com/company/tsp_10.txt");
+            File myObj = new File("src/com/company/"+filename);
             Scanner myReader = new Scanner(myObj);
             size = myReader.nextInt(); //odczytujemy liczbę miast
             matrix = new int[size][size];

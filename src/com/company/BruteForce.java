@@ -45,7 +45,9 @@ public class BruteForce {
             pathStack.clear();
         }
         while (findNextPermutation(counter));
-        System.out.println(bestStack);
+        System.out.println("Waga ścieżki: " + bestStack);
+        System.out.println("Scieżka: ");
+        reverseDeque(); // do odwrocenia sciezki
         while (!bestPathStack.isEmpty()) {
             System.out.print(bestPathStack.pop());
             System.out.print(" ");
@@ -65,6 +67,17 @@ public class BruteForce {
             pathStack.add(counter[i]);
         }
         pathStack.add(startNode);
+    }
+
+    public void reverseDeque(){
+        Deque<Integer> tempDeque = new ArrayDeque<>();
+        while(!bestPathStack.isEmpty()) {
+            tempDeque.add(bestPathStack.pop());
+        }
+        while (!tempDeque.isEmpty()) {
+            bestPathStack.add(tempDeque.pop());
+        }
+
     }
 
     //--------------------------------------------------------------
