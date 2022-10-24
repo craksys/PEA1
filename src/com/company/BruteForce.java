@@ -18,7 +18,7 @@ public class BruteForce {
         this.graph = graph;
     }
 
-    public void intCounter() {
+    public void intCounter() { //inicjalizacja licznika
         counter = new int[graph.size - 1];
         for (int i = 0; i < graph.size - 1; i++) {
             counter[i] = i + 1;
@@ -44,7 +44,7 @@ public class BruteForce {
             weightStack = 0;
             pathStack.clear();
         }
-        while (findNextPermutation(counter));
+        while (findNextPermutation());
         System.out.println("Waga ścieżki: " + bestStack);
         System.out.println("Scieżka: ");
         reverseDeque(); // do odwrocenia sciezki
@@ -52,16 +52,17 @@ public class BruteForce {
             System.out.print(bestPathStack.pop());
             System.out.print(" ");
         }
+        System.out.println("");
     }
 
-    public void swapPath() {
+    public void swapPath() { //podmiana aktualnej ścieżki z najlepszą
         bestPathStack.clear();
         while (!pathStack.isEmpty()) {
             bestPathStack.add(pathStack.pop());
         }
     }
 
-    public void pushActualPath() {
+    public void pushActualPath() { //dodanie aktualnej ścieżki na stos
         pathStack.add(startNode);
         for (int i = 0; i < counter.length; i++) {
             pathStack.add(counter[i]);
@@ -69,7 +70,7 @@ public class BruteForce {
         pathStack.add(startNode);
     }
 
-    public void reverseDeque(){
+    public void reverseDeque(){ //odwrócenie stosu o 180
         Deque<Integer> tempDeque = new ArrayDeque<>();
         while(!bestPathStack.isEmpty()) {
             tempDeque.add(bestPathStack.pop());
@@ -80,54 +81,49 @@ public class BruteForce {
 
     }
 
-    //--------------------------------------------------------------
-    public static int[] swap(int[] data, int left, int right) {
-        int temp = data[left];
-        data[left] = data[right];
-        data[right] = temp;
-
-        return data;
+    public void swap(int left, int right) {
+        int temp = counter[left];
+        counter[left] = counter[right];
+        counter[right] = temp;
     }
 
-    public static int[] makeReverse(int[] data, int left, int right) {
+    public void makeReverse(int left, int right) {
         while (left < right) {
-            int temp = data[left];
-            data[left++] = data[right];
-            data[right--] = temp;
+            int temp = counter[left];
+            counter[left++] = counter[right];
+            counter[right--] = temp;
         }
-
-        return data;
     }
 
 
-    public static boolean findNextPermutation(int[] data) {
-        if (data.length <= 1)
+    public boolean findNextPermutation() {
+        if (counter.length <= 1) //warunek sprawdzający czy w tablicy jest więcej niż 1 element
             return false;
 
-        int last = data.length - 2;
+        int last = counter.length - 2;//wybranie 2 elementu od końca
 
-        while (last >= 0) {
-            if (data[last] < data[last + 1]) {
+        while (last >= 0) { //przejście do pierwszych od końca elementów nie rosnących + piwot
+            if (counter[last] < counter[last + 1]) {
                 break;
             }
             last--;
         }
 
-        if (last < 0)
+        if (last < 0) /// jeżeli nie ma nierosonących elementów to tablica jest posortowana
             return false;
 
-        int nextGreater = data.length - 1;
+        int nextBigger = counter.length - 1;
 
-        for (int i = data.length - 1; i > last; i--) {
-            if (data[i] > data[last]) {
-                nextGreater = i;
+        for (int i = counter.length - 1; i > last; i--) { //znajdowanie najdalszego większego elementu
+            if (counter[i] > counter[last]) {
+                nextBigger = i;
                 break;
             }
         }
 
-        swap(data, nextGreater, last);
+        swap(nextBigger, last);
 
-        makeReverse(data, last + 1, data.length - 1);
+        makeReverse(last + 1, counter.length - 1);
         return true;
     }
 
