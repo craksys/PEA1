@@ -5,7 +5,7 @@ import java.util.Deque;
 
 import static java.lang.Integer.MAX_VALUE;
 
-public class BruteForce {
+public class BnB {
     Graph graph;
     int[] counter;
     int startNode = 0;
@@ -14,7 +14,7 @@ public class BruteForce {
     int weightStack = 0;
     int bestStack = MAX_VALUE;
 
-    public BruteForce(Graph graph) {
+    public BnB(Graph graph){
         this.graph = graph;
     }
 
@@ -22,43 +22,6 @@ public class BruteForce {
         counter = new int[graph.size - 1];
         for (int i = 0; i < graph.size - 1; i++) {
             counter[i] = i + 1;
-        }
-    }
-
-    public void solve() {
-        intCounter();
-        int tempNow, tempNext;
-        do {
-            pushActualPath();
-            tempNow = startNode;
-            for (int i = 0; i < counter.length; i++) {
-                tempNext = counter[i];
-                weightStack += graph.matrix[tempNow][tempNext];
-                tempNow = tempNext;
-            }
-            weightStack += graph.matrix[tempNow][startNode];
-            if (weightStack < bestStack) {
-                bestStack = weightStack;
-                swapPath();
-            }
-            weightStack = 0;
-            pathStack.clear();
-        }
-        while (findNextPermutation());
-        System.out.println("Waga ścieżki: " + bestStack);
-        System.out.println("Scieżka: ");
-        reverseDeque(); // do odwrocenia sciezki
-        while (!bestPathStack.isEmpty()) {
-            System.out.print(bestPathStack.pop());
-            System.out.print(" ");
-        }
-        System.out.println("");
-    }
-
-    public void swapPath() { //podmiana aktualnej ścieżki z najlepszą
-        bestPathStack.clear();
-        while (!pathStack.isEmpty()) {
-            bestPathStack.add(pathStack.pop());
         }
     }
 
@@ -70,31 +33,45 @@ public class BruteForce {
         pathStack.add(startNode);
     }
 
-    public void reverseDeque(){ //odwrócenie stosu o 180
-        Deque<Integer> tempDeque = new ArrayDeque<>();
-        while(!bestPathStack.isEmpty()) {
-            tempDeque.add(bestPathStack.pop());
-        }
-        while (!tempDeque.isEmpty()) {
-            bestPathStack.add(tempDeque.pop());
-        }
-
-    }
-
-    public void swap(int left, int right) {
-        int temp = counter[left];
-        counter[left] = counter[right];
-        counter[right] = temp;
-    }
-
-    public void makeReverse(int left, int right) {
-        while (left < right) {
-            int temp = counter[left];
-            counter[left++] = counter[right];
-            counter[right--] = temp;
+    public void swapPath() { //podmiana aktualnej ścieżki z najlepszą
+        bestPathStack.clear();
+        while (!pathStack.isEmpty()) {
+            bestPathStack.add(pathStack.pop());
         }
     }
 
+    public void solve() {
+        intCounter();
+        int tempNow, tempNext;
+        do {
+            tempNow = startNode;
+            for (int i = 0; i < counter.length; i++) {
+                tempNext = counter[i];
+                weightStack += graph.matrix[tempNow][tempNext];
+                tempNow = tempNext;
+                if(weightStack >= bestStack){
+                    break;
+                }
+            }
+            weightStack += graph.matrix[tempNow][startNode];
+            if(weightStack < bestStack) {
+                //weightStack += graph.matrix[tempNow][startNode];
+                    bestStack = weightStack;
+                    pushActualPath();
+                    swapPath();
+            }
+            weightStack = 0;
+            pathStack.clear();
+        } while (findNextPermutation());
+        System.out.println("Waga ścieżki: " + bestStack);
+        System.out.println("Scieżka: ");
+        reverseDeque(); // do odwrocenia sciezki
+        while (!bestPathStack.isEmpty()) {
+            System.out.print(bestPathStack.pop());
+            System.out.print(" ");
+        }
+        System.out.println("");
+    }
 
     public boolean findNextPermutation() {
         if (counter.length <= 1) //warunek sprawdzający czy w tablicy jest więcej niż 1 element
@@ -127,5 +104,28 @@ public class BruteForce {
         return true;
     }
 
+    public void reverseDeque(){ //odwrócenie stosu o 180
+        Deque<Integer> tempDeque = new ArrayDeque<>();
+        while(!bestPathStack.isEmpty()) {
+            tempDeque.add(bestPathStack.pop());
+        }
+        while (!tempDeque.isEmpty()) {
+            bestPathStack.add(tempDeque.pop());
+        }
 
+    }
+
+    public void swap(int left, int right) {
+        int temp = counter[left];
+        counter[left] = counter[right];
+        counter[right] = temp;
+    }
+
+    public void makeReverse(int left, int right) {
+        while (left < right) {
+            int temp = counter[left];
+            counter[left++] = counter[right];
+            counter[right--] = temp;
+        }
+    }
 }

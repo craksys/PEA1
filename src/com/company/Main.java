@@ -1,8 +1,6 @@
 package com.company;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Scanner;
 
 public class Main {
@@ -47,7 +45,13 @@ public class Main {
                 }
                 case 4 -> {
                     bruteForce = new BruteForce(graph);
-                    bruteForce.bruteForce();
+                    bruteForce.solve();
+                    break;
+                }
+                case 5 -> {
+                    BnB bnb = new BnB(graph);
+                    bnb.solve();
+                    break;
                 }
                 default -> {
                 }
