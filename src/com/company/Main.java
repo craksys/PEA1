@@ -5,14 +5,10 @@ import java.util.Scanner;
 
 public class Main {
     public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_BLACK = "\u001B[30m";
     public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_PURPLE = "\u001B[35m";
-    public static final String ANSI_CYAN = "\u001B[36m";
-    public static final String ANSI_WHITE = "\u001B[37m";
+
+    public static long millisActualTime;
+    public static long executionTime;
 
     public static void main(String[] args) throws IOException {
         Graph graph = new Graph();
@@ -45,13 +41,40 @@ public class Main {
                 }
                 case 4 -> {
                     bruteForce = new BruteForce(graph);
+                    millisActualTime = System.currentTimeMillis();
                     bruteForce.solve();
+                    executionTime = System.currentTimeMillis() - millisActualTime;
+                    System.out.println("Czas wykonania BruteForce: "+ executionTime+" ms");
                     break;
                 }
                 case 5 -> {
                     BnB bnb = new BnB(graph);
+                    millisActualTime = System.currentTimeMillis();
                     bnb.solve();
+                    executionTime = System.currentTimeMillis() - millisActualTime;
+                    System.out.println("Czas wykonania BNB: "+ executionTime+" ms");
                     break;
+                }
+                case 6 -> {
+                    for(int i = 0; i<50; i++){// pusty przebieg
+                        graph = new Graph();
+                        bruteForce = new BruteForce(graph);
+                        graph.createGraph(10);
+                        graph.generateGraph();
+                        bruteForce.solve();
+                    }
+                    for(int i = 0; i<100; i++){
+                        graph = new Graph();
+                        bruteForce = new BruteForce(graph);
+                        graph.createGraph(10);
+                        graph.generateGraph();
+
+                        millisActualTime = System.currentTimeMillis();
+                        bruteForce.solve();
+                        executionTime += System.currentTimeMillis() - millisActualTime;
+                    }
+                    System.out.println("Czas wykonania BruteForce: "+ executionTime+" ms");
+                    executionTime = 0;
                 }
                 default -> {
                 }
@@ -61,7 +84,7 @@ public class Main {
 
      public static void printOptions(){
         System.out.println("Wybierz opcję programu: ");
-        System.out.println("1. Wczytaj graf z plik");
+        System.out.println("1. Wczytaj graf z pliku");
         System.out.println("2. Wygeneruj graf");
         System.out.println("3. Wyświetl aktualny graf");
         System.out.println("4. Rozwiąż: BruteForce");

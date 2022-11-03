@@ -45,14 +45,14 @@ public class BruteForce {
             pathStack.clear();
         }
         while (findNextPermutation());
-        System.out.println("Waga ścieżki: " + bestStack);
-        System.out.println("Scieżka: ");
+        //System.out.println("Waga ścieżki: " + bestStack);
+        //System.out.println("Scieżka: ");
         reverseDeque(); // do odwrocenia sciezki
-        while (!bestPathStack.isEmpty()) {
-            System.out.print(bestPathStack.pop());
-            System.out.print(" ");
-        }
-        System.out.println("");
+       //while (!bestPathStack.isEmpty()) {
+            //System.out.print(bestPathStack.pop());
+            //System.out.print(" ");
+        //}
+        //System.out.println("");
     }
 
     public void swapPath() { //podmiana aktualnej ścieżki z najlepszą
