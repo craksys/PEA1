@@ -5,7 +5,7 @@ import java.util.Deque;
 
 import static java.lang.Integer.MAX_VALUE;
 
-public class BnB {
+public class BetterBruteForce {
     Graph graph;
     int[] counter;
     int startNode = 0;
@@ -14,7 +14,7 @@ public class BnB {
     int weightStack = 0;
     int bestStack = MAX_VALUE;
 
-    public BnB(Graph graph){
+    public BetterBruteForce(Graph graph){
         this.graph = graph;
     }
 

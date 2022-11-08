@@ -14,6 +14,7 @@ public class Main {
         Graph graph = new Graph();
         BruteForce bruteForce;
         Scanner in = new Scanner(System.in);
+        graph.copyFromTXT("tsp_5_hindus.txt");
         int menu = -1;
         while(menu != 0) {
             printOptions();
@@ -48,7 +49,7 @@ public class Main {
                     break;
                 }
                 case 5 -> {
-                    BnB bnb = new BnB(graph);
+                    BetterBruteForce bnb = new BetterBruteForce(graph);
                     millisActualTime = System.currentTimeMillis();
                     bnb.solve();
                     executionTime = System.currentTimeMillis() - millisActualTime;
@@ -76,6 +77,10 @@ public class Main {
                     System.out.println("Czas wykonania BruteForce: "+ executionTime+" ms");
                     executionTime = 0;
                 }
+                case 7 -> {
+                    BranchAndBound branchAndBound = new BranchAndBound(graph);
+                    System.out.println(branchAndBound.reduceMatrix(graph.matrix));
+                }
                 default -> {
                 }
             }
@@ -88,7 +93,9 @@ public class Main {
         System.out.println("2. Wygeneruj graf");
         System.out.println("3. Wyświetl aktualny graf");
         System.out.println("4. Rozwiąż: BruteForce");
-        System.out.println("5. Wyjście");
+        System.out.println("5. Rozwiąż: BruteForce zoptymalizowany (7x)");
+        System.out.println("6. Oblicz czas");
+        System.out.println("7. Wyjście");
     }
 }
 

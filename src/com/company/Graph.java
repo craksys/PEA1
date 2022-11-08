@@ -53,6 +53,9 @@ public class Graph {
             for (int i = 0; i < size; i++) {
                 for (int j = 0; j < size; j++) {
                     matrix[i][j] = myReader.nextInt();
+                    if(matrix[i][j] == 0){
+                        matrix[i][j] = -1;
+                    }
                 }
             }
         } catch (FileNotFoundException e) {
