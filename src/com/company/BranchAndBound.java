@@ -39,8 +39,14 @@ public class BranchAndBound {
         return totalHorizontal + totalVertical;
     }
 
-    public void insertInfinity(int[][] matrix){ //insert -1 where nodes is used
-
+    public void insertInfinity(int[][] matrix, int from, int to){ //insert -1 where nodes is used
+        for(int i = 0; i < matrix.length; i++){
+            matrix[from][i] = -1;
+        }
+        for(int i = 0; i < matrix.length; i++){
+            matrix[i][to] = -1;
+        }
+        matrix[to][from] = -1;
     }
 
     public int getSmallestHorizontal(int[][] matrix, int line){ //z danego rzędu zwraca najmniejszą wartość rożną od -1
