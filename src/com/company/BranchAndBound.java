@@ -3,11 +3,24 @@ package com.company;
 import static java.lang.Integer.MAX_VALUE;
 
 public class BranchAndBound {
-    private Graph graph;
+    public Graph graph;
     public BranchAndBound(Graph graph){
         this.graph = graph;
     }
 
+    public void solve(){
+        int firstReductionCost = reduceMatrix(graph.matrix); //wstępna redukcja macierzy i zapamiętanie jej kosztu
+        int[][] tempMatrix = new int[graph.size][graph.size];
+        int tempCost;
+        for(int i = 1; i < graph.matrix.length; i++){
+            tempMatrix = copy(graph.matrix);
+            tempCost = getCost(graph.matrix, 0,i);
+            insertInfinity(tempMatrix,0,i);
+            tempCost += reduceMatrix(tempMatrix);
+            tempCost += firstReductionCost;
+            System.out.println(tempCost);
+        }
+    }
 
     public int reduceMatrix(int[][] matrix){ //modyfikuje aktualną tablicę !!!!!!
         int totalHorizontal = 0, totalVertical = 0;
@@ -74,5 +87,22 @@ public class BranchAndBound {
         }else {
             return vertical;
         }
+    }
+
+    public int getCost(int[][] matrix, int from, int to){
+       return matrix[from][to];
+    }
+
+    public int[][] copy(int[][] src) {
+        if (src == null) {
+            return null;
+        }
+
+        int[][] copy = new int[src.length][];
+        for (int i = 0; i < src.length; i++) {
+            copy[i] = src[i].clone();
+        }
+
+        return copy;
     }
 }

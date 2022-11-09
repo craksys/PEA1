@@ -79,7 +79,7 @@ public class Main {
                 }
                 case 7 -> {
                     BranchAndBound branchAndBound = new BranchAndBound(graph);
-                    System.out.println(branchAndBound.reduceMatrix(graph.matrix));
+                    branchAndBound.solve();
                 }
                 default -> {
                 }
