@@ -78,7 +78,7 @@ public class BranchAndBound {
     public int getSmallestVertical(int[][] matrix, int column){
         int vertical = MAX_VALUE;
         for(int j = 0; j < matrix.length; j++){
-            if(matrix[j][column] < vertical && matrix[column][j] != -1){
+            if(matrix[j][column] < vertical && matrix[j][column] != -1){
                 vertical = matrix[j][column];
             }
         }
