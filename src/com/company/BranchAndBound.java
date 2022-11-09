@@ -13,7 +13,7 @@ public class BranchAndBound {
 
     public void solve(){
         int firstReductionCost = reduceMatrix(graph.matrix); //wstępna redukcja macierzy i zapamiętanie jej kosztu
-        int[][] tempMatrix = new int[graph.size][graph.size];
+        int[][] tempMatrix;
         int tempCost;
         for(int i = 1; i < graph.matrix.length; i++){ //sprawdzenie pierwszych wierzcholków
             tempMatrix = copy(graph.matrix);
@@ -28,7 +28,27 @@ public class BranchAndBound {
         }
         System.out.println(findSmallestFromArray(nodes));
         while(nodes.get(findSmallestFromArray(nodes)).size() < graph.size - 1){
+            int tempActual = findSmallestFromArray(nodes);
+            boolean[] isUsed = new boolean[graph.size];
+            markUsedNodes(isUsed, nodes.get(tempActual));
 
+            int firstUnused;
+            for(int i = 0; i < isUsed.length; i++){ //rozwinięcie pierwszego niewykorzystanego węzła
+                if(isUsed[i] == false){
+                    firstUnused = i;
+                    isUsed[i] = true;
+                    break;
+                }
+            }
+
+
+        }
+    }
+
+    public void markUsedNodes(boolean[] isUsed, ArrayList<Integer> array ){
+        isUsed[0] = true;
+        for(int i = 1; i < array.size(); i++){
+            isUsed[array.get(i)] = true;
         }
     }
 
