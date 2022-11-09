@@ -13,8 +13,9 @@ public class BranchAndBound {
 
     public void solve(){
         int firstReductionCost = reduceMatrix(graph.matrix); //wstępna redukcja macierzy i zapamiętanie jej kosztu
-        int[][] tempMatrix;
+        int[][] tempMatrix, veryTempMatrix;
         int tempCost;
+        int firstUnused;
         for(int i = 1; i < graph.matrix.length; i++){ //sprawdzenie pierwszych wierzcholków
             tempMatrix = copy(graph.matrix);
             tempCost = getCost(graph.matrix, 0,i);
@@ -27,22 +28,50 @@ public class BranchAndBound {
             nodes.add(tempArray);
         }
         System.out.println(findSmallestFromArray(nodes));
-        while(nodes.get(findSmallestFromArray(nodes)).size() < graph.size - 1){
+        while(nodes.get(findSmallestFromArray(nodes)).size() < graph.size){
             int tempActual = findSmallestFromArray(nodes);
             boolean[] isUsed = new boolean[graph.size];
             markUsedNodes(isUsed, nodes.get(tempActual));
 
-            int firstUnused;
-            for(int i = 0; i < isUsed.length; i++){ //rozwinięcie pierwszego niewykorzystanego węzła
-                if(isUsed[i] == false){
-                    firstUnused = i;
-                    isUsed[i] = true;
-                    break;
-                }
+
+            tempMatrix = copy(graph.matrix);
+            insertInfinity(tempMatrix,0,nodes.get(tempActual).get(1));
+            for(int i = 1; i < nodes.get(tempActual).size() - 1; i++){ //obliczenie aktualnie wykonywanej macierzy
+                insertInfinity(tempMatrix, i, i+1);
+                reduceMatrix(tempMatrix);
             }
-
-
+            System.out.println("xd");
+            for(int temp = nextUnused(isUsed); temp != -1;){
+                veryTempMatrix = copy(tempMatrix);
+                tempCost = nodes.get(tempActual).get(0);
+                tempCost += getCost(veryTempMatrix, nodes.get(tempActual).get(nodes.get(tempActual).size()-1), temp);
+                insertInfinity(veryTempMatrix,nodes.get(tempActual).get(nodes.get(tempActual).size()-1), temp);
+                tempCost += reduceMatrix(veryTempMatrix);
+                ArrayList<Integer> tempArray = new ArrayList<>();
+                tempArray.add(tempCost);
+                for(int j = 1; j < nodes.get(tempActual).size(); j++){
+                    tempArray.add(nodes.get(tempActual).get(j));
+                }
+                tempArray.add(temp);
+                nodes.add(tempArray);
+                temp = nextUnused(isUsed);
+            }
+            System.out.println("xd");
+            nodes.remove(tempActual);
         }
+        System.out.println("xd");
+    }
+
+    public int nextUnused(boolean[] isUsed){
+        int firstUnused = -1;
+        for(int i = 0; i < isUsed.length; i++){ //rozwinięcie pierwszego niewykorzystanego węzła
+            if(isUsed[i] == false){
+                firstUnused = i;
+                isUsed[i] = true;
+                return firstUnused;
+            }
+        }
+        return firstUnused;
     }
 
     public void markUsedNodes(boolean[] isUsed, ArrayList<Integer> array ){
