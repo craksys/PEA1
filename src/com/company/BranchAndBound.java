@@ -1,9 +1,12 @@
 package com.company;
 
+import java.util.ArrayList;
+
 import static java.lang.Integer.MAX_VALUE;
 
 public class BranchAndBound {
     public Graph graph;
+    private ArrayList<ArrayList<Integer>> nodes = new ArrayList<ArrayList<Integer>>();
     public BranchAndBound(Graph graph){
         this.graph = graph;
     }
@@ -12,13 +15,20 @@ public class BranchAndBound {
         int firstReductionCost = reduceMatrix(graph.matrix); //wstępna redukcja macierzy i zapamiętanie jej kosztu
         int[][] tempMatrix = new int[graph.size][graph.size];
         int tempCost;
-        for(int i = 1; i < graph.matrix.length; i++){
+        for(int i = 1; i < graph.matrix.length; i++){ //sprawdzenie pierwszych wierzcholków
             tempMatrix = copy(graph.matrix);
             tempCost = getCost(graph.matrix, 0,i);
             insertInfinity(tempMatrix,0,i);
             tempCost += reduceMatrix(tempMatrix);
             tempCost += firstReductionCost;
-            System.out.println(tempCost);
+            ArrayList<Integer> tempArray = new ArrayList<>();
+            tempArray.add(tempCost);
+            tempArray.add(i);
+            nodes.add(tempArray);
+        }
+        System.out.println(findSmallestFromArray(nodes));
+        while(nodes.get(findSmallestFromArray(nodes)).size() < graph.size - 1){
+
         }
     }
 
@@ -104,5 +114,17 @@ public class BranchAndBound {
         }
 
         return copy;
+    }
+
+    public int findSmallestFromArray(ArrayList<ArrayList<Integer>> array){
+        int tempSmallest = MAX_VALUE;
+        int indexOfSmallest = -1;
+        for(int i = 0; i < array.size(); i++){
+            if(array.get(i).get(0) < tempSmallest){
+                tempSmallest = array.get(i).get(0);
+                indexOfSmallest = i;
+            }
+        }
+        return indexOfSmallest;
     }
 }
