@@ -37,10 +37,9 @@ public class BranchAndBound {
             tempMatrix = copy(graph.matrix);
             insertInfinity(tempMatrix,0,nodes.get(tempActual).get(1));
             for(int i = 1; i < nodes.get(tempActual).size() - 1; i++){ //obliczenie aktualnie wykonywanej macierzy
-                insertInfinity(tempMatrix, i, i+1);
+                insertInfinity(tempMatrix, nodes.get(tempActual).get(i), nodes.get(tempActual).get(i+1));
                 reduceMatrix(tempMatrix);
             }
-            System.out.println("xd");
             for(int temp = nextUnused(isUsed); temp != -1;){
                 veryTempMatrix = copy(tempMatrix);
                 tempCost = nodes.get(tempActual).get(0);
@@ -56,10 +55,13 @@ public class BranchAndBound {
                 nodes.add(tempArray);
                 temp = nextUnused(isUsed);
             }
-            System.out.println("xd");
             nodes.remove(tempActual);
         }
-        System.out.println("xd");
+        System.out.println("Waga: " + nodes.get((nodes.size()-1)).get(0));
+        for(int i = 1; i < nodes.get((nodes.size()-1)).size(); i++){
+            System.out.println(nodes.get((nodes.size()-1)).get(i));
+        }
+
     }
 
     public int nextUnused(boolean[] isUsed){
