@@ -12,13 +12,14 @@ public class BranchAndBound {
     }
 
     public void solve(){
-        int firstReductionCost = reduceMatrix(graph.matrix); //wstępna redukcja macierzy i zapamiętanie jej kosztu
-        int[][] tempMatrix, veryTempMatrix;
+        int[][] firstCopyOfMatrix, tempMatrix, veryTempMatrix;
+        firstCopyOfMatrix = copy(graph.matrix);
+        int firstReductionCost = reduceMatrix(firstCopyOfMatrix); //wstępna redukcja macierzy i zapamiętanie jej kosztu
+
         int tempCost;
-        int firstUnused;
-        for(int i = 1; i < graph.matrix.length; i++){ //sprawdzenie pierwszych wierzcholków
-            tempMatrix = copy(graph.matrix);
-            tempCost = getCost(graph.matrix, 0,i);
+        for(int i = 1; i < firstCopyOfMatrix.length; i++){ //sprawdzenie pierwszych wierzcholków
+            tempMatrix = copy(firstCopyOfMatrix);
+            tempCost = getCost(firstCopyOfMatrix, 0,i);
             insertInfinity(tempMatrix,0,i);
             tempCost += reduceMatrix(tempMatrix);
             tempCost += firstReductionCost;
@@ -33,7 +34,7 @@ public class BranchAndBound {
             markUsedNodes(isUsed, nodes.get(tempActual));
 
 
-            tempMatrix = copy(graph.matrix);
+            tempMatrix = copy(firstCopyOfMatrix);
             insertInfinity(tempMatrix,0,nodes.get(tempActual).get(1));
             reduceMatrix(tempMatrix);
             for(int i = 1; i < nodes.get(tempActual).size() - 1; i++){ //obliczenie aktualnie wykonywanej macierzy
