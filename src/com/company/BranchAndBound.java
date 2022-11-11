@@ -27,7 +27,6 @@ public class BranchAndBound {
             tempArray.add(i);
             nodes.add(tempArray);
         }
-        System.out.println(findSmallestFromArray(nodes));
         while(nodes.get(findSmallestFromArray(nodes)).size() < graph.size){
             int tempActual = findSmallestFromArray(nodes);
             boolean[] isUsed = new boolean[graph.size];
@@ -36,6 +35,7 @@ public class BranchAndBound {
 
             tempMatrix = copy(graph.matrix);
             insertInfinity(tempMatrix,0,nodes.get(tempActual).get(1));
+            reduceMatrix(tempMatrix);
             for(int i = 1; i < nodes.get(tempActual).size() - 1; i++){ //obliczenie aktualnie wykonywanej macierzy
                 insertInfinity(tempMatrix, nodes.get(tempActual).get(i), nodes.get(tempActual).get(i+1));
                 reduceMatrix(tempMatrix);
@@ -57,9 +57,9 @@ public class BranchAndBound {
             }
             nodes.remove(tempActual);
         }
-        System.out.println("Waga: " + nodes.get((nodes.size()-1)).get(0));
-        for(int i = 1; i < nodes.get((nodes.size()-1)).size(); i++){
-            System.out.println(nodes.get((nodes.size()-1)).get(i));
+        System.out.println("Waga: " + nodes.get(findSmallestFromArray(nodes)).get(0));
+        for(int i = 1; i < nodes.get(findSmallestFromArray(nodes)).size(); i++){
+            System.out.print(nodes.get(findSmallestFromArray(nodes)).get(i) + " ");
         }
 
     }
@@ -120,7 +120,14 @@ public class BranchAndBound {
         for(int i = 0; i < matrix.length; i++){
             matrix[i][to] = -1;
         }
-        matrix[to][from] = -1;
+        //matrix[0][to] = -1;
+        matrix[to][0] = -1;
+
+
+       // matrix[to][from] = -1;
+       // for(int i = 0; i < matrix.length; i++){
+       //     matrix[0][i] = -1;
+       // }
     }
 
     public int getSmallestHorizontal(int[][] matrix, int line){ //z danego rzędu zwraca najmniejszą wartość rożną od -1
