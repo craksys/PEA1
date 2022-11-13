@@ -10,11 +10,11 @@ public class Main {
     public static long millisActualTime;
     public static long executionTime;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         Graph graph = new Graph();
         BruteForce bruteForce;
         Scanner in = new Scanner(System.in);
-        graph.copyFromTXT("wrong5.txt");
+        graph.copyFromTXT("tsp_10.txt");
         int menu = -1;
         while(menu != 0) {
             printOptions();
@@ -46,32 +46,32 @@ public class Main {
                     bruteForce.solve();
                     executionTime = System.currentTimeMillis() - millisActualTime;
                     System.out.println("Czas wykonania BruteForce: "+ executionTime+" ms");
-                    break;
                 }
                 case 5 -> {
-                    BetterBruteForce bnb = new BetterBruteForce(graph);
+                    BetterBruteForce betterBruteForce = new BetterBruteForce(graph);
                     millisActualTime = System.currentTimeMillis();
-                    bnb.solve();
+                    betterBruteForce.solve();
                     executionTime = System.currentTimeMillis() - millisActualTime;
                     System.out.println("Czas wykonania BruteForce v2: "+ executionTime+" ms");
-                    break;
                 }
                 case 6 -> {
+                    int rozmiargrafu = 10;
+                    BranchAndBound branchAndBound;
                     for(int i = 0; i<50; i++){// pusty przebieg
                         graph = new Graph();
-                        bruteForce = new BruteForce(graph);
-                        graph.createGraph(10);
+                        branchAndBound = new BranchAndBound(graph);
+                        graph.createGraph(rozmiargrafu);
                         graph.generateGraph();
-                        bruteForce.solve();
+                        branchAndBound.solve();
                     }
                     for(int i = 0; i<100; i++){
                         graph = new Graph();
-                        bruteForce = new BruteForce(graph);
-                        graph.createGraph(10);
+                        branchAndBound = new BranchAndBound(graph);
+                        graph.createGraph(rozmiargrafu);
                         graph.generateGraph();
 
                         millisActualTime = System.currentTimeMillis();
-                        bruteForce.solve();
+                        branchAndBound.solve();
                         executionTime += System.currentTimeMillis() - millisActualTime;
                     }
                     System.out.println("Czas wykonania BruteForce: "+ executionTime+" ms");
@@ -97,8 +97,9 @@ public class Main {
         System.out.println("3. Wyświetl aktualny graf");
         System.out.println("4. Rozwiąż: BruteForce");
         System.out.println("5. Rozwiąż: BruteForce zoptymalizowany (7x)");
-        System.out.println("6. Oblicz czas");
-        System.out.println("7. Wyjście");
+        System.out.println("6. Oblicz czas w pętli");
+        System.out.println("7. Rozwiąż: Branch and Bound");
+        System.out.println("8. Wyjście");
     }
 }
 

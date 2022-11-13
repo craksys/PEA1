@@ -6,7 +6,7 @@ import static java.lang.Integer.MAX_VALUE;
 
 public class BranchAndBound {
     public Graph graph;
-    private ArrayList<ArrayList<Integer>> nodes = new ArrayList<ArrayList<Integer>>();
+    private ArrayList<ArrayList<Integer>> nodes = new ArrayList<>();
     public BranchAndBound(Graph graph){
         this.graph = graph;
     }
@@ -59,16 +59,19 @@ public class BranchAndBound {
             nodes.remove(tempActual);
         }
         System.out.println("Waga: " + nodes.get(findSmallestFromArray(nodes)).get(0));
+        System.out.print("0 ");
         for(int i = 1; i < nodes.get(findSmallestFromArray(nodes)).size(); i++){
             System.out.print(nodes.get(findSmallestFromArray(nodes)).get(i) + " ");
         }
+        System.out.println("0 ");
+
 
     }
 
     public int nextUnused(boolean[] isUsed){
         int firstUnused = -1;
         for(int i = 0; i < isUsed.length; i++){ //rozwinięcie pierwszego niewykorzystanego węzła
-            if(isUsed[i] == false){
+            if(!isUsed[i]){
                 firstUnused = i;
                 isUsed[i] = true;
                 return firstUnused;
