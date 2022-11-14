@@ -1,6 +1,5 @@
 package com.company;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
@@ -14,9 +13,9 @@ public class Main {
         Graph graph = new Graph();
         BruteForce bruteForce;
         Scanner in = new Scanner(System.in);
-        graph.copyFromTXT("tsp_10.txt");
+        graph.copyFromTXT("tsp_12.txt");
         int menu = -1;
-        while(menu != 0) {
+        while (menu != 0) {
             printOptions();
             menu = in.nextInt();
             switch (menu) {
@@ -45,26 +44,26 @@ public class Main {
                     millisActualTime = System.currentTimeMillis();
                     bruteForce.solve();
                     executionTime = System.currentTimeMillis() - millisActualTime;
-                    System.out.println("Czas wykonania BruteForce: "+ executionTime+" ms");
+                    System.out.println("Czas wykonania BruteForce: " + executionTime + " ms");
                 }
                 case 5 -> {
                     BetterBruteForce betterBruteForce = new BetterBruteForce(graph);
                     millisActualTime = System.currentTimeMillis();
                     betterBruteForce.solve();
                     executionTime = System.currentTimeMillis() - millisActualTime;
-                    System.out.println("Czas wykonania BruteForce v2: "+ executionTime+" ms");
+                    System.out.println("Czas wykonania BruteForce v2: " + executionTime + " ms");
                 }
                 case 6 -> {
                     int rozmiargrafu = 10;
                     BranchAndBound branchAndBound;
-                    for(int i = 0; i<50; i++){// pusty przebieg
+                    for (int i = 0; i < 50; i++) {// pusty przebieg
                         graph = new Graph();
                         branchAndBound = new BranchAndBound(graph);
                         graph.createGraph(rozmiargrafu);
                         graph.generateGraph();
                         branchAndBound.solve();
                     }
-                    for(int i = 0; i<100; i++){
+                    for (int i = 0; i < 100; i++) {
                         graph = new Graph();
                         branchAndBound = new BranchAndBound(graph);
                         graph.createGraph(rozmiargrafu);
@@ -74,7 +73,7 @@ public class Main {
                         branchAndBound.solve();
                         executionTime += System.currentTimeMillis() - millisActualTime;
                     }
-                    System.out.println("Czas wykonania BruteForce: "+ executionTime+" ms");
+                    System.out.println("Czas wykonania BruteForce: " + executionTime + " ms");
                     executionTime = 0;
                 }
                 case 7 -> {
@@ -82,7 +81,7 @@ public class Main {
                     millisActualTime = System.currentTimeMillis();
                     branchAndBound.solve();
                     executionTime = System.currentTimeMillis() - millisActualTime;
-                    System.out.println("Czas wykonania BNB: "+ executionTime+" ms");
+                    System.out.println("Czas wykonania BNB: " + executionTime + " ms");
                 }
                 default -> {
                 }
@@ -90,7 +89,7 @@ public class Main {
         }
     }
 
-     public static void printOptions(){
+    public static void printOptions() {
         System.out.println("Wybierz opcję programu: ");
         System.out.println("1. Wczytaj graf z pliku");
         System.out.println("2. Wygeneruj graf");

@@ -6,9 +6,9 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Graph {
+    public int size;
     int[][] matrix;
     Random rand = new Random();
-    public int size;
 
     public void createGraph(int size) {
         this.size = size;
@@ -39,21 +39,21 @@ public class Graph {
                 }
                 System.out.print(matrix[i][j]);
             }
-            System.out.println("");
+            System.out.println();
         }
     }
 
 
     public void copyFromTXT(String filename) {
         try {
-            File myObj = new File("src/com/company/"+filename);
+            File myObj = new File("src/com/company/" + filename);
             Scanner myReader = new Scanner(myObj);
             size = myReader.nextInt(); //odczytujemy liczbę miast
             matrix = new int[size][size];
             for (int i = 0; i < size; i++) {
                 for (int j = 0; j < size; j++) {
                     matrix[i][j] = myReader.nextInt();
-                    if(matrix[i][j] == 0){
+                    if (matrix[i][j] == 0) {
                         matrix[i][j] = -1;
                     }
                 }
