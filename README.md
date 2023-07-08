@@ -1,6 +1,7 @@
 # Zbiór algorytmów do rozwiązywania problemu TSP
 
 Prowadzący: J.M. (Projektowanie Efektywnych Algorytmów PEA)
+Zadanie nr. 1
 
 
 Zawiera algorytmy:
